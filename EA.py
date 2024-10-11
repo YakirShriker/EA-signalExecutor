@@ -3,13 +3,12 @@ import time
 
 # Global variables
 global testing
-testing = False
+testing = True
 global reached_tp_already
 reached_tp_already = True
 # Dictionaries to store pending orders and active orders
 orders_dict = {"pending_orders": {}, "active_orders": {}}
-pending_orders = {}
-active_orders = {}
+
 
 # Function to send pending orders and store them in memory
 def send_order(symbol, order_type, price, sl, tp, lot, magic_number):
@@ -226,15 +225,20 @@ def process_trade_pairs(pairs):
         lot_size = 0.1  # Set initial lot size
         if testing:
             if symbol == "XAUUSD+":
-                buy_price = symbol_info.bid + 0.5
-                buy_tp = symbol_info.bid + 1.5
-                sell_price = symbol_info.bid - 0.5
-                sell_tp = symbol_info.bid - 1.5
+                buy_price = symbol_info.bid + 1
+                buy_tp = symbol_info.bid + 2
+                sell_price = symbol_info.bid - 1
+                sell_tp = symbol_info.bid - 2
+            elif symbol == "DJ30" or symbol == "NAS100" or symbol == "SP500" or symbol == "UK100":
+                buy_price = symbol_info.bid + 10
+                buy_tp = symbol_info.bid + 20
+                sell_price = symbol_info.bid - 10
+                sell_tp = symbol_info.bid - 20
             else:
-                buy_price = symbol_info.bid + 0.0001
-                buy_tp = symbol_info.bid + 0.0003
-                sell_price = symbol_info.bid - 0.0001
-                sell_tp = symbol_info.bid - 0.0003
+                buy_price = symbol_info.bid + 0.0002
+                buy_tp = symbol_info.bid + 0.0004
+                sell_price = symbol_info.bid - 0.0002
+                sell_tp = symbol_info.bid - 0.0004
         # Place the appropriate pending orders
         if current_price < buy_price:
             print(f"Placing BUY STOP order for {symbol} at {buy_price}")
